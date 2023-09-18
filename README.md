@@ -1,5 +1,9 @@
 # ESP01nRelayBoards
 There some boards on the market that have 1 or more relays and a connector for an ESP01. This project provides a small test programm for those boards
+
+## Needed libs
+Only default libs are used
+
 ## 1 Relay Board
 Relay is directly connection to GPIO0
 ## 2-8 Relay Boards
@@ -14,3 +18,5 @@ A0 01 01 A2
 
 Example Relay 8 to low 
 A0 08 00 A8
+
+Visit also my Website if you want http://www.fambach.net
