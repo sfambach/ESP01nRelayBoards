@@ -1,5 +1,9 @@
 # ESP01nRelayBoards
-There some boards on the market that have 1 or more relays and a connector for an ESP01. This project provides a small test programm for those boards
+There some boards on the market that have 1 or more relays and a connector for an ESP01. This project provides a small test programm for those boards.
+The application switches all realays after another to on. If all are on then it starts to switch all off.
+Currentl delay is 1000ms none blocking.
+
+OTA and Wifi Can be activated.
 
 ## Needed libs
 Only default libs are used
