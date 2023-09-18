@@ -10,7 +10,7 @@
 ******************************************************************************/
 #include <Arduino.h>
 
-// choose what you want 
+// choose what you want
 #define WIFI_ACTIVE
 #define OTA_ACTIVE
 
@@ -61,13 +61,13 @@ void setupOTA() {
 #ifdef ESP8266
   ArduinoOTA.setPort(8266);
 #elif defined ESP32
-  //ArduinoOTA.setPort(3232);
+  ArduinoOTA.setPort(3232);
 #endif
   // Hostname defaults to esp8266-[ChipID]
   ArduinoOTA.setHostname("NewOTAClient");
 
   // No authentication by default
-  // ArduinoOTA.setPassword("admin");
+  //ArduinoOTA.setPassword("admin");
 
   // Password can be set with it's md5 value as well
   // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
@@ -102,7 +102,7 @@ void setupOTA() {
       Serial.println("Receive Failed");
     } else if (error == OTA_END_ERROR) {
       Serial.println("End Failed");
-    }                                                                                                                                                                                                                                                                                                                                                              
+    }
   });
   ArduinoOTA.begin();
   Serial.println("Ready");
@@ -118,7 +118,7 @@ void setupOTA() {
 #ifdef ONE_RELAY
 
 const uint8_t RELAY_COUNT = 1;
-const uint8_t RELAY_PIN = 0  ;
+const uint8_t RELAY_PIN = 0;
 //const uint8_t LED = ?;
 
 #elif defined TWO_RELAY
@@ -140,7 +140,7 @@ const uint8_t RELAY_COUNT = 8;
 * state = HIGH / LOW
 */
 void setRelay(uint8_t relay, bool state) {
-  
+
   if (relay < 1 || relay > RELAY_COUNT) {
     DEBUG_PRINT("Wrong Relay Index: ");
     DEBUG_PRINTLN(relay);
@@ -150,11 +150,11 @@ void setRelay(uint8_t relay, bool state) {
   digitalWrite(RELAY_PIN, state);
 
 #else
-  uint8_t iState = (state?1:0);
+  uint8_t iState = (state ? 1 : 0);
   Serial.write(0xA0);
   Serial.write(0x00 | relay);
   Serial.write(0x00 | iState);
-  Serial.write(0xA0 | (relay+state));
+  Serial.write(0xA0 | (relay + state));
 
 #endif
 }
@@ -192,7 +192,7 @@ void testRelays() {
       state = !state;
     }
 
-   /* DEBUG_PRINT("relay: ");
+    /* DEBUG_PRINT("relay: ");
     DEBUG_PRINT(counter);
     DEBUG_PRINT(" state : ");
     DEBUG_PRINTLN((state ? "HIGH" : "LOW"));*/
@@ -203,7 +203,7 @@ void testRelays() {
 /** Main Programm ************************************************************/
 void setup() {
   Serial.begin(115200);
- //  DEBUG_PRINTLN("Setup");
+  //  DEBUG_PRINTLN("Setup");
 
 #ifdef WIFI_ACTIVE
   // wifi
