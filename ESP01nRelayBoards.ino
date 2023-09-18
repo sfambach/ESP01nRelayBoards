@@ -10,6 +10,15 @@
 ******************************************************************************/
 #include <Arduino.h>
 
+// choose what you want 
+#define WIFI_ACTIVE
+#define OTA_ACTIVE
+
+//#define ONE_RELAY
+#define TWO_RELAY
+//#define FOUR_RELAY
+//#define EIGHT_RELAY
+
 /** Debuging *****************************************************************/
 #define DEBUG
 #ifdef DEBUG
@@ -19,7 +28,6 @@
 #define DEBUG_PRINTLN(x)
 #define DEBUG_PRINT(x)
 #endif
-
 
 /** Wifi *****************************************************************/
 
@@ -33,12 +41,13 @@
 //#error Unknown controller
 #endif
 
-#ifdef WIFI_ACTIV
+
+#ifdef WIFI_ACTIVE
 #ifndef SSID
 #define SSID "NODES"
 #define SSID_PASSWD "HappyNodes1234"
 #endif
-#endif  // WIFI_ACTIV
+#endif  // WIFI_ACTIVE
 
 
 /** OTA *****************************************************************/
@@ -50,7 +59,7 @@ void setupOTA() {
 
   // Port defaults to 8266 / 3232
 #ifdef ESP8266
-  //ArduinoOTA.setPort(8266);
+  ArduinoOTA.setPort(8266);
 #elif defined ESP32
   //ArduinoOTA.setPort(3232);
 #endif
@@ -93,7 +102,7 @@ void setupOTA() {
       Serial.println("Receive Failed");
     } else if (error == OTA_END_ERROR) {
       Serial.println("End Failed");
-    }
+    }                                                                                                                                                                                                                                                                                                                                                              
   });
   ArduinoOTA.begin();
   Serial.println("Ready");
@@ -103,16 +112,13 @@ void setupOTA() {
 #endif  // OTA_ACTIVE
 
 /** Relay *****************************************************************/
-//#define ONE_RELAY
-//#define TWO_RELAY
-#define FOUR_RELAY
-//#define EIGHT_RELAY
+
 
 
 #ifdef ONE_RELAY
 
 const uint8_t RELAY_COUNT = 1;
-conar uint8_t RELAY_PIN = 0;
+const uint8_t RELAY_PIN = 0  ;
 //const uint8_t LED = ?;
 
 #elif defined TWO_RELAY
@@ -129,9 +135,6 @@ const uint8_t RELAY_COUNT = 8;
 
 #endif
 
-
-char* TEMPLATE = "A00%i0%iA%i";
-char buffer[8];
 /** Set Relay state
 * Relay = 1 .... n
 * state = HIGH / LOW
@@ -148,8 +151,11 @@ void setRelay(uint8_t relay, bool state) {
 
 #else
   uint8_t iState = (state?1:0);
-  sprintf(buffer,TEMPLATE,relay,iState, relay+iState);
-  Serial.println(buffer);
+  Serial.write(0xA0);
+  Serial.write(0x00 | relay);
+  Serial.write(0x00 | iState);
+  Serial.write(0xA0 | (relay+state));
+
 #endif
 }
 
@@ -201,7 +207,7 @@ void testRelays() {
 /** Main Programm ************************************************************/
 void setup() {
   Serial.begin(115200);
-  DEBUG_PRINTLN("Setup");
+ //  DEBUG_PRINTLN("Setup");
 
 #ifdef WIFI_ACTIVE
   // wifi
@@ -212,6 +218,7 @@ void setup() {
     delay(5000);
     ESP.restart();
   }
+  //Serial.println(WiFi.localIP);
 #endif  // WIFI_ACTIVE
 
 
